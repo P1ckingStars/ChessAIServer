@@ -5,13 +5,22 @@
 #include "board.hpp"
 
 class player {
-    virtual move make_move(vector<vector<chess>> &state) = 0;
+protected:
+    bool side;
+public:
+    player(bool side);
+    virtual chess_move make_move(vector<vector<chess *>> const & state) = 0;
 };
 
-class ai_player: player {
-    move make_move(vector<vector<chess>> &state);
-}
+class ai_player: public player {
+public:
+    chess_move make_move(vector<vector<chess *>> const & state);
+};
 
-class terminal_player: player {
-    move make_move(vector<vector<chess>> &state);
-}
+class terminal_player: public player {
+public:
+    terminal_player(bool side) : player(side) {}
+    chess_move make_move(vector<vector<chess *>> const & state);
+};
+
+#endif
