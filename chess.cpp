@@ -28,7 +28,7 @@ move_func chess_move[6] = {
     pawn_legal_move   
 };
 
-bool is_in_board(int x, int y){
+bool inline is_in_board(int x, int y){
     return x >= 0 && x < 8 && y >= 0 && y < 8;
 }
 
@@ -40,15 +40,19 @@ enum dir_displacement {
 
 void move_dir(point pos, vector<vector<chess*>> & board, unordered_set<point> &res, dir_displacement dir_x, dir_displacement dir_y) {
     point start = pos;
-    while (start.x > 0 && start.x < 7 && start.y > 0 && start.y < 7){
+    start.print();
+    while (start.x >= 0 && start.x < 8 && start.y >= 0 && start.y < 8){
         start.x += dir_x;
         start.y += dir_y;
+        if (!is_in_board(start.x, start.y)) return;
         if (board[start.x][start.y] == nullptr){
             res.insert(start);
+            start.print();
         }
         else {
             if (board[start.x][start.y]->player != board[pos.x][pos.y]->player) {
                 res.insert(start);
+                start.print();
                 break;
             }
             if (board[start.x][start.y]->player == board[pos.x][pos.y]->player) {
@@ -108,10 +112,10 @@ unordered_set<point> pawn_legal_move(point pos, vector<vector<chess*>> & board){
             }
 
             // diagonal capture left (3) & right (4)
-            if (board[pos.x + 1][pos.y - 1] && board[pos.x + 1][pos.y - 1]->player == PLAYER_BLACK){
+            if (is_in_board(pos.x + 1, pos.y - 1) && board[pos.x + 1][pos.y - 1] && board[pos.x + 1][pos.y - 1]->player == PLAYER_BLACK){
                 res.insert({(int8_t)(pos.x + 1), (int8_t)(pos.y - 1)});
             }
-            if (board[pos.x + 1][pos.y + 1] && board[pos.x + 1][pos.y + 1]->player == PLAYER_BLACK){
+            if (is_in_board(pos.x + 1, pos.y + 1) && board[pos.x + 1][pos.y + 1] && board[pos.x + 1][pos.y + 1]->player == PLAYER_BLACK){
                 res.insert({(int8_t)(pos.x + 1), (int8_t)(pos.y + 1)});
             }
         }
@@ -132,10 +136,10 @@ unordered_set<point> pawn_legal_move(point pos, vector<vector<chess*>> & board){
             }
 
             // diagonal capture left (3) & right (4)
-            if (board[pos.x - 1][pos.y - 1] && board[pos.x - 1][pos.y - 1]->player == PLAYER_WHITE){
+            if (is_in_board(pos.x - 1, pos.y - 1) && board[pos.x - 1][pos.y - 1] && board[pos.x - 1][pos.y - 1]->player == PLAYER_WHITE){
                 res.insert({(int8_t)(pos.x - 1), (int8_t)(pos.y - 1)});
             }
-            if (board[pos.x - 1][pos.y + 1] && board[pos.x - 1][pos.y + 1]->player == PLAYER_WHITE){
+            if (is_in_board(pos.x - 1, pos.y + 1) && board[pos.x - 1][pos.y + 1] && board[pos.x - 1][pos.y + 1]->player == PLAYER_WHITE){
                 res.insert({(int8_t)(pos.x - 1), (int8_t)(pos.y + 1)});
             }
         }
@@ -161,6 +165,7 @@ unordered_set<point> queen_legal_move  (point pos, vector<vector<chess*>> & boar
 
 unordered_set<point> rook_legal_move   (point pos, vector<vector<chess*>> & board){
     unordered_set<point> res;
+    cout << "rook legal moves:" << endl; 
     move_up(pos, board, res);
     move_down(pos, board, res);
     move_left(pos, board, res);

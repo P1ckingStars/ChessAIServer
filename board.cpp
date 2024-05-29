@@ -15,11 +15,11 @@ using namespace std;
 */
 
 char chess_char[6] = {
-    'n',
+    'k',
     'q',
     'r',
     'b',
-    'k',
+    'n',
     'p'
 };
   

@@ -6,6 +6,7 @@
 #define PLAYER_BLACK 1
 
 #include <stdint.h>
+#include <iostream>
 #include <unordered_set>
 
 using namespace std;
@@ -34,6 +35,9 @@ struct point {
     bool operator==(const point &other) const
     { 
         return (*this).x == other.x && (*this).y == other.y;
+    }
+    void print() {
+        cout << "point x: " << x << ", y: " << y;
     }
 };
 
