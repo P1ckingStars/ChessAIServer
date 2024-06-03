@@ -74,12 +74,7 @@ bool board::next_move(chess_move c_move) {
     if (grid[c_move.from.x][c_move.from.y] == nullptr && grid[c_move.from.x][c_move.from.y]->player == player_turns) return false;
     cout << "is your chess" << endl;
     if (grid[c_move.from.x][c_move.from.y]->legal_move(this->grid).count(c_move.to)) {
-        grid[c_move.to.x][c_move.to.y]      = grid[c_move.from.x][c_move.from.y];
-        grid[c_move.to.x][c_move.to.y]->pos = c_move.to;
-        grid[c_move.from.x][c_move.from.y]  = nullptr;
-        if ((c_move.to.x == 0 || c_move.to.x == 7) && grid[c_move.to.x][c_move.to.y]->c_type == PAWN) {
-            grid[c_move.to.x][c_move.to.y]->c_type = QUEEN;
-        } 
+        MOVE(grid, c_move)
         player_turns = !player_turns;
         cout << "player_turns " << player_turns << endl;
         return true;
