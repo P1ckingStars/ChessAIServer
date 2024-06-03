@@ -126,7 +126,7 @@ best_move get_max(vector<vector<chess *>> &board, int depth, int alpha, int beta
         {
             if (board[i][j] && board[i][j]->player == PLAYER_WHITE){
                 for (auto &move : board[i][j]->legal_move(board)){
-                    chess_move mv({i, j}, move);
+                    chess_move mv(point{(short)i, (short)j}, move);
                     possible_moves.push_back(mv);
                 }
             }
