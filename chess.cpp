@@ -98,6 +98,7 @@ unordered_set<point> pawn_legal_move(point pos, vector<vector<chess*>> & board){
     unordered_set<point> res;
 
     // current player white
+    
     if (board[pos.x][pos.y]->player == PLAYER_WHITE){
         // white pawn at init pos forward move (1)
         if (pos.x == 1){
@@ -165,7 +166,7 @@ unordered_set<point> queen_legal_move  (point pos, vector<vector<chess*>> & boar
 
 unordered_set<point> rook_legal_move   (point pos, vector<vector<chess*>> & board){
     unordered_set<point> res;
-    cout << "rook legal moves:" << endl; 
+    // cout << "rook legal moves:" << endl; 
     move_up(pos, board, res);
     move_down(pos, board, res);
     move_left(pos, board, res);
@@ -238,9 +239,45 @@ unordered_set<point> king_legal_move(point pos, vector<vector<chess *>> &board){
             }
         }
     }
+    if (pos.x > 0 && pos.y > 0){
+        if (board[pos.x - 1][pos.y - 1] == nullptr){
+            res.insert({(int8_t)(pos.x - 1), (int8_t)(pos.y - 1)});
+        } else {
+            if (board[pos.x - 1][pos.y - 1]->player != board[pos.x][pos.y]->player){
+                res.insert({(int8_t)(pos.x - 1), (int8_t)(pos.y - 1)});
+            }
+        }
+    }
+    if (pos.x < 7 && pos.y < 7){
+        if (board[pos.x + 1][pos.y + 1] == nullptr){
+            res.insert({(int8_t)(pos.x + 1), (int8_t)(pos.y + 1)});
+        } else {
+            if (board[pos.x + 1][pos.y + 1]->player != board[pos.x][pos.y]->player){
+                res.insert({(int8_t)(pos.x + 1), (int8_t)(pos.y + 1)});
+            }
+        }
+    }
+    if (pos.x > 0 && pos.y < 7){
+        if (board[pos.x - 1][pos.y + 1] == nullptr){
+            res.insert({(int8_t)(pos.x - 1), (int8_t)(pos.y + 1)});
+        } else {
+            if (board[pos.x - 1][pos.y + 1]->player != board[pos.x][pos.y]->player){
+                res.insert({(int8_t)(pos.x - 1), (int8_t)(pos.y + 1)});
+            }
+        }
+    }
+    if (pos.x < 7 && pos.y > 0){
+        if (board[pos.x + 1][pos.y - 1] == nullptr){
+            res.insert({(int8_t)(pos.x + 1), (int8_t)(pos.y - 1)});
+        } else {
+            if (board[pos.x + 1][pos.y - 1]->player != board[pos.x][pos.y]->player){
+                res.insert({(int8_t)(pos.x + 1), (int8_t)(pos.y - 1)});
+            }
+        }
+    }
     return res;
 }
 
-unordered_set<point> chess::legal_move(vector<vector<chess *>> & board) {
+unordered_set<point> chess::legal_move(vector<vector<chess *>> const & board) {
     return chess_move[this->c_type](this->pos, board);
 }

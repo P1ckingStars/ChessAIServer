@@ -3,7 +3,7 @@
 
 game::game() {
     p_white = new terminal_player(PLAYER_WHITE);
-    p_black = new terminal_player(PLAYER_BLACK);
+    p_black = new ai_player(PLAYER_BLACK);
     m_board = board();
 }
 

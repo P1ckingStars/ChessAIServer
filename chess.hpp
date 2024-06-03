@@ -37,7 +37,7 @@ struct point {
         return (*this).x == other.x && (*this).y == other.y;
     }
     void print() {
-        cout << "point x: " << x << ", y: " << y;
+        // cout << "point x: " << x << ", y: " << y;
     }
 };
 
@@ -55,6 +55,16 @@ struct std::hash<point>
 struct chess_move {
     point from;
     point to;
+    chess_move() {
+        from.x = 0;
+        from.y = 0;
+        to.x = 0;
+        to.y = 0;
+    }
+    chess_move(point from, point to) {
+        this->from  = from;
+        this->to    = to;
+    }
 };
 
 enum chess_type {
@@ -70,18 +80,18 @@ struct chess {
     point pos;
     bool player;
     chess_type c_type;
-    unordered_set<point> legal_move(vector<vector<chess *>> & board);
+    unordered_set<point> legal_move(vector<vector<chess *>> const & board);
 };
 
-typedef unordered_set<point> (*move_func) (point pos, vector<vector<chess*>> & board);
+typedef unordered_set<point> (*move_func) (point pos, vector<vector<chess*>> const & board);
 
 
-unordered_set<point> pawn_legal_move   (point pos, vector<vector<chess*>> & board);
-unordered_set<point> queen_legal_move  (point pos, vector<vector<chess*>> & board);
-unordered_set<point> rook_legal_move   (point pos, vector<vector<chess*>> & board);
-unordered_set<point> bishop_legal_move (point pos, vector<vector<chess*>> & board);
-unordered_set<point> knight_legal_move (point pos, vector<vector<chess*>> & board);
-unordered_set<point> king_legal_move   (point pos, vector<vector<chess*>> & board);
+unordered_set<point> pawn_legal_move   (point pos, vector<vector<chess*>> const & board);
+unordered_set<point> queen_legal_move  (point pos, vector<vector<chess*>> const & board);
+unordered_set<point> rook_legal_move   (point pos, vector<vector<chess*>> const & board);
+unordered_set<point> bishop_legal_move (point pos, vector<vector<chess*>> const & board);
+unordered_set<point> knight_legal_move (point pos, vector<vector<chess*>> const & board);
+unordered_set<point> king_legal_move   (point pos, vector<vector<chess*>> const & board);
 
 
 #endif

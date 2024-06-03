@@ -40,7 +40,7 @@ class chess_move_service {
 };
 
 class server_node {
-
+    server_node();
 };
 
 #endif
