@@ -21,9 +21,13 @@ class board {
 public:
     vector<vector<chess*>> grid;
     board();
-    vector<vector<chess*>> get_grid();
+    vector<vector<chess*>> get_grid() const {
+        return grid;   
+    }
+    bool turns() const {
+        return player_turns;
+    }
     bool next_move(chess_move c_move);
-    bool turns();
     bool end();
     void print_board();
 };

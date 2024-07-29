@@ -81,9 +81,6 @@ bool board::next_move(chess_move c_move) {
     }
     return false;
 }
-bool board::turns() {
-    return player_turns;
-}
 bool board::end() {
     bool white_king_alive = 0;
     bool black_king_alive = 0;
