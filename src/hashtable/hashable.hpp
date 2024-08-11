@@ -15,6 +15,7 @@ struct CompressedBoard {
 
 bool operator == (CompressedBoard & left, CompressedBoard & right);
 CompressedBoard compressBoard(board const & board);
+board expandBoard(CompressedBoard const & board);
 string boardToStr(vector<vector<chess*>> const & board, bool turn);
 size_t normal_collision_handler(size_t index, size_t count, size_t size);
 int16_t combine_c_move(const chess_move &move);
