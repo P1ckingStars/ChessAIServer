@@ -2,6 +2,7 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
+#include <rpc/client.h>
 #include "board.hpp"
 
 class player {
@@ -22,7 +23,6 @@ public:
     ai_player(bool side) : player(side) {}
     chess_move make_move(vector<vector<chess *> > const & state);
 };
-
 class terminal_player: public player {
 public:
     terminal_player(bool side) : player(side) {}

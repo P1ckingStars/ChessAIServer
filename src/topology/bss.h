@@ -10,9 +10,11 @@
 
 struct Task {
     CompressedBoard board;
+    uint8_t task_id;
 };
 struct Reponse {
     int16_t move;
+    uint8_t task_id;
 };
 
 template <class T>

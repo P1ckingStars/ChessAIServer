@@ -3,6 +3,7 @@
 #include <stddef.h>
 #include <iostream>
 #include "../chess/chess.hpp"
+#include "../chess/game.hpp"
 #include "../chess/player.hpp"
 #include "../hashtable/hashable.hpp"
 #include "bss.h"
@@ -34,18 +35,7 @@ int16_t combine_c_move(const chess_move &move) {
 }
 
 int main() {
-    rpc::client client("127.0.0.1", 8080);
-
-    std::string from, to;
-    while(true) {
-        std::cout << "Enter your move (e.g., e2 e4): ";
-        std::cin >> from >> to;
-
-        if (from == "exit" || to == "exit") break;
-
-        chess_move move(point(from[0] - 'a', 8 - (from[1] - '0')), point(to[0] - 'a', 8 - (to[1] - '0')));
-        int16_t encoded_move = combine_c_move(move);
-    }
-
+    game b = game();   
+    b.run();
     return 0;
 }

@@ -10,6 +10,7 @@ class game {
     player *p_white;
 public:
     game();
+    game(player * black, player * white): p_black(black), p_white(white), m_board(board()) {}
     void run();
 };
 
