@@ -11,7 +11,7 @@ public:
 
 struct LinearBlock;
 
-class LinearAllocator: Allocator {
+class LinearAllocator: public Allocator {
 private:
     LinearBlock * head;
     LinearBlock * tail;

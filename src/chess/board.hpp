@@ -21,6 +21,7 @@ class board {
 public:
     vector<vector<chess*>> grid;
     board();
+    board(vector<vector<chess *>> & grid, bool player_turns);
     vector<vector<chess*>> get_grid() const {
         return grid;   
     }

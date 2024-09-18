@@ -1,5 +1,7 @@
 #ifndef CHESS_HPP
 #define CHESS_HPP
+#include <cstddef>
+#include <cstdint>
 #include <vector>
 
 #define PLAYER_WHITE 0
@@ -37,16 +39,23 @@ BLACK
 */
 
 struct point {
-    int16_t x: 8;
-    int16_t y: 8; 
+    int8_t x;
+    int8_t y; 
     bool operator==(const point &other) const
     { 
         return (*this).x == other.x && (*this).y == other.y;
     }
+    point(int8_t x, int8_t y) {
+        this->x = x;
+        this->y = y;
+    }
+    point() {}
     void print() {
         // cout << "point x: " << x << ", y: " << y;
     }
 };
+
+#define MAKE_POINT(x, y) ()
 
 // Define knight directions as pairs of (x_change, y_change)
 
@@ -55,7 +64,7 @@ struct std::hash<point>
 {
     std::size_t operator()(const point& k) const
     {
-        return k.x << 8 + k.y;
+        return *(int16_t *)&k;
     }
 };
 

@@ -1,5 +1,6 @@
 #include "hashable.hpp"
 #include <cstdint>
+#include <vector>
 
 /**
  * White upper, black lower.
@@ -15,13 +16,30 @@ bool operator==(CompressedBoard &left, CompressedBoard &right) {
     }
     return true;
 }
-CompressedBoard compressBoard(board const &board) {
+board expandBoard(CompressedBoard const & compressed_board) {
+    vector<vector<chess *>> chessmap(8, vector<chess *>(8, nullptr));
+    uint64_t bit = 1;
+    int chessid = 0;
+    for (int x = 0; x < 8; x++) {
+        for (int y = 0; y < 8; y++) {
+            if (compressed_board.board_info_ & bit) {
+                chessmap[x][y] = new chess {
+                    point(x, y),
+                    static_cast<bool>(compressed_board.chess_info_[chessid] & (1 << 3)),
+                    chess_type(compressed_board.chess_info_[chessid] & 0b111)
+                } ;
+            }
+            bit <<= 1;
+        }
+    }
+    return board(chessmap, compressed_board.player_turns);
+}
+CompressedBoard compressBoard(vector<vector<chess*>> const & grid, bool turn) {
     CompressedBoard res;
-    auto grid = board.get_grid();
     res.board_info_ = 0;
     for (int i = 0; i < 16; i++)
         res.chess_info_[i] = 0;
-    uint64_t bit = 0;
+    uint64_t bit = 1;
     int chessid = 0;
     for (int x = 0; x < 8; x++) {
         for (int y = 0; y < 8; y++) {
@@ -33,7 +51,13 @@ CompressedBoard compressBoard(board const &board) {
             bit <<= 1;
         }
     }
+    res.player_turns = turn;
     return res;
+}
+CompressedBoard compressBoard(board const &board) {
+    CompressedBoard res;
+    auto grid = board.get_grid();
+    return compressBoard(grid, board.turns());
 }
 string boardToStr(vector<vector<chess *>> const &board, bool turn) {
     string res = "";

@@ -1,16 +1,13 @@
 #ifndef HASHTABLE_HPP
 #define HASHTABLE_HPP
-#include <unordered_map>
+#include <cstddef>
 #include <stdlib.h>
-#include <sstream>
-#include <iomanip>
-#include <stdexcept>
-#include "../chess/chess.hpp"
 #include "../memoryallocator/allocator.h"
 
 using namespace std;
 
 typedef size_t(* CollisionHandler)(size_t index, size_t collision_count, size_t size);
+
 
 template <class K>
 class HashFunc {
@@ -54,10 +51,10 @@ public:
     }
 };
 
-template <class K, class V, class C, V EmptyVal, CollisionHandler handler, 
-    HashFunc<K> hash, CompressFunc<K, C> compress>
+template <class K, class V, class C, CollisionHandler handler>
 class HashTable {
     typedef int (* HashFunc)(K key);
+    typedef C (* CompressFunc)(K key);
     struct Pair {
         C key;
         V val;
@@ -67,47 +64,57 @@ protected:
     size_t reserved_size_;
     Pair * table_;
     Allocator * allocator_;
-    HashFunc * hash_func_;
+    HashFunc * hash;
+    CompressFunc * compress;
     bool can_grow_;
+    bool extend() {
+        if (!can_grow_) return false;
+    }
+    bool shrink() {
+        if (!can_grow_) return false;
+    }
+    size_t search(K key) {
+        size_t code = hash(key);
+        C compressed_key = compress(key);
+        size_t index;
+        int count = 0;
+        for (index = code % size_; table_[index].key != C() && table_[index].Key != compressed_key;
+            index = handler(index, count++, reserved_size_));
+        return index;
+    }
 public:
-    HashTable(Allocator * allocator, HashFunc * func, 
+    HashTable(Allocator * allocator, HashFunc hfunc, CompressFunc cfunc,
         size_t reserved_size, bool can_grow) : 
             allocator_(allocator), 
-            hash_func_(func), 
+            hash(hfunc), 
+            compress(cfunc),
             can_grow_(can_grow), 
             reserved_size_(reserved_size), 
             size_(0) {
         table_ = allocator_->allocate(sizeof(Pair) * reserved_size);   
     }
-    bool extend() {
+    
 
-    }
-    bool shrink() {
-
-    }
     bool put(K key, V val) {
         if (size_ * 2 > reserved_size_) {
             if (can_grow_ ? !extend() : 1) return false;
         }
-        size_t code = hash(key);
-        C compressed_key = compress(key);
-        size_t index;
-        int count = 0;
-        for (index = code % size_; table_[index].has_value && table_[index].Key != compressed_key;
-            index = handler(index, count++, reserved_size_));
-        if (table_[index].val != EmptyVal) return false;
+        size_t index = search(key);
+        if (table_[index].key != C()) return false;
         table_[index].val = val;
-        table_[index].key = compressed_key;
+        table_[index].key = compress(key);
         return true;
     }
     V get(K key) {
-
+        size_t index = search(key);
+        if (table_[index].val != C()) return table_[index].val;
+        return V();
     }
     V& operator[](K key) {
 
     }
     bool contains(K key) {
-        get(key) == EmptyVal;
+        return table_[search(key)].key != C();
     }
     // allocator_->allocate(size);
 };

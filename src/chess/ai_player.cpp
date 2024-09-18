@@ -128,11 +128,11 @@ best_move get_min(vector<vector<chess *>> &board, int depth, int alpha, int beta
         {
             if (board[i][j] && board[i][j]->player == PLAYER_BLACK)
             {
-                if (!(board[i][j]->pos == point { i, j })) {
+                if (!(board[i][j]->pos == point(i, j))) {
                     cout << "position error at " << i << " " << j << endl;
                 }
                 for (auto &move : board[i][j]->legal_move(board)){
-                    chess_move mv({i, j}, move);
+                    chess_move mv(point(i, j), move);
                     //possible_moves.push_back(mv);
                     possible_moves.push({mv, predicted_score(board, mv, PLAYER_BLACK)});
                 }
@@ -181,7 +181,7 @@ best_move get_max(vector<vector<chess *>> &board, int depth, int alpha, int beta
         {
             if (board[i][j] && board[i][j]->player == PLAYER_WHITE){
                 for (auto &move : board[i][j]->legal_move(board)){
-                    chess_move mv(point{(short)i, (short)j}, move);
+                    chess_move mv(point(i, j), move);
                     possible_moves.push({mv, predicted_score(board, mv, PLAYER_WHITE)});
                     //possible_moves.push_back(mv);
                 }

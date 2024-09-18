@@ -7,6 +7,7 @@
 struct CompressedBoard {
     uint64_t board_info_;
     char chess_info_[16];
+    bool player_turns;
     inline void setChess(int index, char info) {
         info &= 0xf;
         chess_info_[index / 2] |= info << ((index % 2) == 1) * 4;
@@ -15,6 +16,7 @@ struct CompressedBoard {
 
 bool operator == (CompressedBoard & left, CompressedBoard & right);
 CompressedBoard compressBoard(board const & board);
+CompressedBoard compressBoard(vector<vector<chess*>> const & board, bool turn);
 board expandBoard(CompressedBoard const & board);
 string boardToStr(vector<vector<chess*>> const & board, bool turn);
 size_t normal_collision_handler(size_t index, size_t count, size_t size);

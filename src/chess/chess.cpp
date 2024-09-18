@@ -206,7 +206,7 @@ unordered_set<point> knight_legal_move(point pos, vector<vector<chess *>> const 
         if (is_in_board(next_x, next_y)) {
             chess* dest = board[next_x][next_y];
             if (dest == nullptr || dest->player != board[pos.x][pos.y]->player) {
-                legal_moves.insert({static_cast<int16_t>(next_x), static_cast<int16_t>(next_y)});
+                legal_moves.insert({static_cast<int8_t>((next_x)), static_cast<int8_t>((next_y))});
             }
         }
     }

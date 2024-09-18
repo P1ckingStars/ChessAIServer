@@ -1,10 +1,10 @@
 #include "allocator.h"
 
-struct Linear_block {
+struct LinearBlock {
     size_t size : 31;
     bool free : 1;
-    Linear_block * prev;
-    Linear_block * next;
+    LinearBlock * prev;
+    LinearBlock * next;
 };
 
 /*
@@ -16,16 +16,16 @@ struct Linear_block {
 
 LinearAllocator::LinearAllocator(void * base, size_t size) {
     // base is the start address of the allocation region
-    head = reinterpret_cast<Linear_block*>(base);
-    tail = reinterpret_cast<char*>(head) + size;
+    head = reinterpret_cast<LinearBlock*>(base);
+    tail = reinterpret_cast<LinearBlock*>(reinterpret_cast<char*>(head) + size);
 }
 
 void * LinearAllocator::allocate(size_t size) {
-    Linear_block * current = head;
+    LinearBlock * current = head;
     while (current != tail){
-        if (current->free && reinterpret_cast<char*>(current->next) - reinterpret_cast<char*>(current) >= size + sizeof(Linear_block)){
-            if (reinterpret_cast<char*>(current->next) - reinterpret_cast<char*>(current) >= size + sizeof(Linear_block) * 2){
-                Linear_block * new_block = reinterpret_cast<Linear_block*>(reinterpret_cast<char*>(current) + sizeof(Linear_block) + size);
+        if (current->free && reinterpret_cast<char*>(current->next) - reinterpret_cast<char*>(current) >= size + sizeof(LinearBlock)){
+            if (reinterpret_cast<char*>(current->next) - reinterpret_cast<char*>(current) >= size + sizeof(LinearBlock) * 2){
+                LinearBlock * new_block = reinterpret_cast<LinearBlock*>(reinterpret_cast<char*>(current) + sizeof(LinearBlock) + size);
                 new_block->free = true;
                 new_block->prev = current;
                 new_block->next = current->next;
@@ -33,7 +33,7 @@ void * LinearAllocator::allocate(size_t size) {
                 current->next = new_block;
             }
             current->free = false;
-            return reinterpret_cast<void*>(reinterpret_cast<char*>(current) + sizeof(Linear_block));
+            return reinterpret_cast<void*>(reinterpret_cast<char*>(current) + sizeof(LinearBlock));
         }
         current = current->next;
     }
@@ -41,7 +41,7 @@ void * LinearAllocator::allocate(size_t size) {
 }
 
 int LinearAllocator::deallocate(void * ptr) {
-    Linear_block * block = reinterpret_cast<Linear_block*>(reinterpret_cast<char*>(ptr) - sizeof(Linear_block));
+    LinearBlock * block = reinterpret_cast<LinearBlock*>(reinterpret_cast<char*>(ptr) - sizeof(LinearBlock));
     block->free = true;
     if (block->prev && block->prev->free){
         block->prev->next = block->next;

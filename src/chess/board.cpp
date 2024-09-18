@@ -23,6 +23,10 @@ char chess_char[6] = {
     'p'
 };
   
+board::board(vector<vector<chess *>> & grid, bool player_turns) {
+    this->grid = std::move(grid);
+    this->player_turns = player_turns;
+}
 board::board() {
     player_turns = PLAYER_WHITE;
     grid = vector<vector<chess *>>(8, vector<chess *>(8, nullptr));
@@ -44,7 +48,7 @@ board::board() {
     grid[7][6]  = new chess { point {7, 6}, PLAYER_BLACK, KNIGHT    };
     grid[7][7]  = new chess { point {7, 7}, PLAYER_BLACK, ROOK      };
 
-    for (uint8_t i = 0; i < 8; i++) {
+    for (int8_t i = 0; i < 8; i++) {
         grid[1][i]  = new chess { point {1, i}, PLAYER_WHITE, PAWN };
         grid[6][i]  = new chess { point {6, i}, PLAYER_BLACK, PAWN };
     }

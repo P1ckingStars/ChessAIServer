@@ -29,11 +29,5 @@ public:
     chess_move make_move(vector<vector<chess *> > const & state);
 };
 
-class remote_player: public player {
-public:
-    remote_player(bool side) : player(side) {}
-    chess_move make_move(vector<vector<chess *> > const & state);
-
-};
 
 #endif
