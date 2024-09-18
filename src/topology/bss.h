@@ -12,12 +12,12 @@ struct Task {
     CompressedBoard board;
     uint8_t task_id;
 };
-struct Reponse {
+struct Response {
     int16_t move;
-    uint8_t task_id;
+    bool valid;
 };
 
-template <class T>
+template <class T, int size>
 struct RoundBuffer: LockableProxy<SimpleMutex> {
     std::size_t head = 0;
     std::size_t tail = 0;
@@ -44,9 +44,15 @@ struct RoundBuffer: LockableProxy<SimpleMutex> {
     }
 };
 
+#define MAX_REQUEST 256
+#define MAX_WAITING_QUEUE 32
 struct BSS {
-    RoundBuffer<Task>taskQueue;
-    ThreadSafePtr<RoundBuffer<Task>> taskQueuePtr {&taskQueue};
+    ThreadSafePtr<RoundBuffer<Task, MAX_WAITING_QUEUE>> task_queue_ptr {&task_queue};
+    ThreadSafePtr<RoundBuffer<uint8_t, MAX_REQUEST>> request_slot_ptr {&request_slot};
+    Response responses[MAX_REQUEST];
+private:
+    RoundBuffer<Task, MAX_WAITING_QUEUE> task_queue;
+    RoundBuffer<uint8_t, MAX_REQUEST> request_slot;
 };
 
 /*

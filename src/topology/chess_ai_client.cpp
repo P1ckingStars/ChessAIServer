@@ -22,6 +22,7 @@ public:
         } catch (const std::exception &e) {
             std::cerr << "Balancer failed: " << e.what() << std::endl;
         }
+        return res;
     }
 };
 
@@ -35,7 +36,7 @@ int16_t combine_c_move(const chess_move &move) {
 }
 
 int main() {
-    game b = game();   
+    game b = game(new terminal_player(0), new remote_player(1, "127.0.0.1", 8080));   
     b.run();
     return 0;
 }

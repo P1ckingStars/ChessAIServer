@@ -23,6 +23,9 @@ public:
     ~TmpLock() {
         ptr_->unlock();
     } 
+    T * deref() const {
+        return ptr_;
+    }
     T * operator->() const {
         return ptr_;
     }
