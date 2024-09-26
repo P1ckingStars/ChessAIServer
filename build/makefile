@@ -12,7 +12,12 @@ server: obj ../src/topology/bss.h ../src/topology/chess_ai_load_balancer.cpp
 	g++ ../src/topology/chess_ai_load_balancer.cpp *.o ../dependency/obj/*.o ../dependency/obj/*.a -o server
 
 compute: obj ../src/topology/bss.h ../src/topology/chess_ai_compute_node.cpp 
-	g++ ../src/topology/chess_ai_compute_node.cpp *.o ../dependency/obj/*.o ../dependency/obj/*.a -o server
+	g++ ../src/topology/chess_ai_compute_node.cpp *.o ../dependency/obj/*.o ../dependency/obj/*.a -o compute
+
+local: client server compute
+	mv client ../run
+	mv server ../run
+	mv compute ../run
 
 clean:
 	rm ./*.o

@@ -1,1 +1,5 @@
 .vscode
+# ./build/*.o
+# ./run/compute
+# ./run/client
+# ./run/server
