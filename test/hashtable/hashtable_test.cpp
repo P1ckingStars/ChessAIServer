@@ -40,4 +40,5 @@ int main() {
         test[i] = i;
         orig[i] = i;
     }
+    return 0;
 }

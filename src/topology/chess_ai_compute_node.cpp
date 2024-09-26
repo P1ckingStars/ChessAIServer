@@ -19,7 +19,7 @@ int dsm_main(char *mem_region, size_t length, int argc, char *argv[]) {
 
   Task task;
   while (1) {
-    while (!bss->task_queue_ptr->deref()->pop(task));
+    while (!bss->task_queue_ptr->pop(task));
     process_task(bss, task);
   }
 

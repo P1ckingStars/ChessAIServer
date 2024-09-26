@@ -17,8 +17,22 @@ struct Response {
     bool valid;
 };
 
+class SimpleMutexWrapper {
+    SimpleMutex mu_ = 0;
+public:
+    SimpleMutexWrapper() {
+
+    }
+    void lock() {
+        DSMSync::singleton()->lock(&mu_);
+    }
+    void unlock() {
+        DSMSync::singleton()->unlock(&mu_);
+    }
+};
+
 template <class T, int size>
-struct RoundBuffer: LockableProxy<SimpleMutex> {
+struct RoundBuffer: LockableProxy<SimpleMutexWrapper> {
     std::size_t head = 0;
     std::size_t tail = 0;
     T buffer[10];
@@ -26,7 +40,7 @@ struct RoundBuffer: LockableProxy<SimpleMutex> {
     bool push(T val) {
         size_t next_tail = (tail + 1) % 10;
         if (next_tail != head) { // there's space
-            buffer[tail].move = val.move;
+            buffer[tail] = val;
             tail = next_tail;
             return true;
         }

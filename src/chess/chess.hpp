@@ -2,7 +2,9 @@
 #define CHESS_HPP
 #include <cstddef>
 #include <cstdint>
+#include <rpc/msgpack/adaptor/define_decl.hpp>
 #include <vector>
+#include "rpc/msgpack.hpp"
 
 #define PLAYER_WHITE 0
 #define PLAYER_BLACK 1
@@ -41,6 +43,7 @@ BLACK
 struct point {
     int8_t x;
     int8_t y; 
+    MSGPACK_DEFINE_ARRAY(x, y)
     bool operator==(const point &other) const
     { 
         return (*this).x == other.x && (*this).y == other.y;
@@ -71,6 +74,7 @@ struct std::hash<point>
 struct chess_move {
     point from;
     point to;
+    MSGPACK_DEFINE_ARRAY(from, to)
     chess_move() {
         from.x = 0;
         from.y = 0;

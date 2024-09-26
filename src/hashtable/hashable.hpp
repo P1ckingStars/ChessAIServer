@@ -3,11 +3,13 @@
 
 #include "../chess/chess.hpp"
 #include "../chess/board.hpp"
+#include "rpc/msgpack.hpp"
 
 struct CompressedBoard {
     uint64_t board_info_;
     char chess_info_[16];
     bool player_turns;
+    MSGPACK_DEFINE_ARRAY(board_info_, chess_info_, player_turns)
     inline void setChess(int index, char info) {
         info &= 0xf;
         chess_info_[index / 2] |= info << ((index % 2) == 1) * 4;

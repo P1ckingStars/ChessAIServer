@@ -26,14 +26,6 @@ public:
     }
 };
 
-int16_t combine_c_move(const chess_move &move) {
-    int16_t result = 0;
-    result |= (move.from.x & 0x0F) << 12;
-    result |= (move.from.y & 0x0F) << 8;
-    result |= (move.to.x & 0x0F) << 4;
-    result |= (move.to.y & 0x0F);
-    return result;
-}
 
 int main() {
     game b = game(new terminal_player(0), new remote_player(1, "127.0.0.1", 8080));   

@@ -64,8 +64,8 @@ protected:
     size_t reserved_size_;
     Pair * table_;
     Allocator * allocator_;
-    HashFunc * hash;
-    CompressFunc * compress;
+    HashFunc hash;
+    CompressFunc compress;
     bool can_grow_;
     bool extend() {
         if (!can_grow_) return false;
@@ -91,7 +91,7 @@ public:
             can_grow_(can_grow), 
             reserved_size_(reserved_size), 
             size_(0) {
-        table_ = allocator_->allocate(sizeof(Pair) * reserved_size);   
+        table_ = (Pair *)allocator_->allocate(sizeof(Pair) * reserved_size);   
     }
     
 

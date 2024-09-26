@@ -40,7 +40,7 @@ public:
     }
     ~ThreadSafePtr() {
     } 
-    TmpLock<T> * operator->() const {
+    TmpLock<T> operator->() const {
         return TmpLock(ptr_);
     }
 };
