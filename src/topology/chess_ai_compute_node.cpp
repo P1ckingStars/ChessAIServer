@@ -14,7 +14,7 @@ void process_task(BSS *bss, Task task) {
 }
 
 int dsm_main(char *mem_region, size_t length, int argc, char *argv[]) {
-  printf("----------Start Server----------");
+  printf("----------Start Compute Node----------");
   printf("%lu\n", sizeof(BSS));
   BSS *bss = (BSS *)mem_region;
   char *base = mem_region + 4096;
