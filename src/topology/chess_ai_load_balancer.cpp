@@ -15,7 +15,6 @@ int dsm_main(char *mem_region, size_t length, int argc, char *argv[]) {
     bss->responses[i].valid = false;
     bss->request_slot_ptr->push(i);
   }
-  printf("finished queue initialization");
 
   rpc::server balancer(8080);
   balancer.bind(RPC_SUBMIT_TASK, [bss](CompressedBoard board) {
@@ -32,6 +31,6 @@ int dsm_main(char *mem_region, size_t length, int argc, char *argv[]) {
 
   balancer.async_run(16);
 
-  std::cout << "Balancer is running..." << std::endl;
+  DEBUG_LOG("----------Balancer start running----------");
   return 0;
 }
